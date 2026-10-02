@@ -1,4 +1,5 @@
 import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import bcrypt from "bcryptjs";
 
 export type UserRole = "customer" | "manager" | "admin";
 
@@ -28,6 +29,8 @@ export function hashPassword(password: string) {
 
 export function verifyPassword(password: string, storedHash: string | null) {
   if (!storedHash) return false;
+  // Hash bcrypt ($2a$/$2b$/$2y$) la truong hop mat khau duoc dat thu cong trong database.
+  if (/^\$2[aby]\$/.test(storedHash)) return bcrypt.compareSync(password, storedHash);
   const [, salt, digest] = storedHash.split("$");
   if (!salt || !digest) return false;
   const expected = Buffer.from(digest, "hex");

@@ -4,13 +4,13 @@ import type { Product } from "../api";
 import { useApp } from "../app-context";
 import { formatMoney, productImage } from "../utils";
 
-export function ProductCard({ product, index }: { product: Product; index: number }) {
+export function ProductCard({ product, index, fallbackImage }: { product: Product; index: number; fallbackImage?: string }) {
   const { addToCart } = useApp();
   const [quantity, setQuantity] = useState(1);
   const soldOut = product.stock_quantity === 0;
   return <article className="product-card">
     <Link className="product-image-wrap" to={`/products/${product.id}`}>
-      <img src={productImage(product)} alt={`${product.name} - chất liệu vải`} />
+      <img src={productImage(product, fallbackImage)} alt={`${product.name} - chất liệu vải`} />
       <span className="image-index">{String(index + 1).padStart(2, "0")}</span>
       <span className="image-meter">{product.fixed_meters} m / gói</span>
       {soldOut && <span className="sold-out-label">Tạm hết hàng</span>}

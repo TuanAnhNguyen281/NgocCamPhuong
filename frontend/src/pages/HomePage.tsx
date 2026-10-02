@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
+import { ProductGridSkeleton } from "../components/ProductGridSkeleton";
 import { useApp } from "../app-context";
 import { productImage } from "../utils";
 
@@ -13,20 +14,23 @@ type HeroSlide = {
   productId?: number;
 };
 
+// Tren trang chu, san pham chua co anh se dung anh hero cua studio.
+const HERO_IMAGE = "/hero-fabric.png";
+
 export function HomePage() {
   const { products, productsLoading, productsError, apiReady } = useApp();
   const [activeSlide, setActiveSlide] = useState(0);
   const slides = useMemo<HeroSlide[]>(() => [
     {
       key: "studio-note",
-      image: "/hero-fabric.png",
+      image: HERO_IMAGE,
       alt: "Những cuộn vải linen với một dải xanh bụi",
       label: "STUDIO NOTE / 01",
       caption: "LINEN, COTTON, A QUIET BLUE",
     },
     ...products.map((product) => ({
       key: `product-${product.id}`,
-      image: productImage(product),
+      image: productImage(product, HERO_IMAGE),
       alt: `${product.name} - chất liệu vải`,
       label: product.sku,
       caption: product.name,
@@ -68,9 +72,9 @@ export function HomePage() {
     </section>
     <section className="home-collection">
       <header className="section-heading"><div><p className="eyebrow">LỰA CHỌN TỪ STUDIO</p><h2>Chất liệu cho<br /><em>những ngày thường.</em></h2></div><div><p>Mét vải được đóng theo từng đơn vị cố định, dễ chọn, dễ tính và luôn rõ ràng trước khi đặt hàng.</p><Link className="underlined-link" to="/products">Xem tất cả sản phẩm <span>→</span></Link></div></header>
-      {productsLoading && <p className="notice">Đang tải bộ sưu tập...</p>}
+      {productsLoading && products.length === 0 && <ProductGridSkeleton count={2} className="featured-grid" />}
       {productsError && <p className="notice error">{productsError}</p>}
-      <div className="product-grid featured-grid">{products.slice(0, 2).map((product, index) => <ProductCard key={product.id} product={product} index={index} />)}</div>
+      <div className="product-grid featured-grid">{products.slice(0, 2).map((product, index) => <ProductCard key={product.id} product={product} index={index} fallbackImage={HERO_IMAGE} />)}</div>
     </section>
     <section className="story-teaser">
       <div className="story-image"><img src="/story-studio.png" alt="Đôi tay sắp xếp những cuộn vải trong studio" /></div>

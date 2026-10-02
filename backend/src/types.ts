@@ -34,12 +34,29 @@ export type OrderItemRead = {
   line_total: string;
 };
 
+export type OrderHistoryRead = {
+  id: number;
+  from_status: string | null;
+  to_status: string;
+  actor_name: string;
+  actor_role: string;
+  note: string | null;
+  created_at: string;
+};
+
 export type OrderRead = {
   id: number;
   order_code: string;
   customer_id?: number | null;
   customer_name: string;
   customer_email: string;
+  recipient_name: string | null;
+  recipient_phone: string | null;
+  note: string | null;
+  created_at: string;
+  // So giay khach con duoc tu huy don; 0 khi het han hoac don khong con o trang thai cho xac nhan.
+  cancel_seconds_left: number;
+  history: OrderHistoryRead[];
   shipping_address: string;
   payment_method: string;
   payment_status: string;

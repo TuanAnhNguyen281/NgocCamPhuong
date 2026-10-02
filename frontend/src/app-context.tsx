@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { createOrder, getCurrentUser, getHealth, getProducts, type Product, type User } from "./api";
+import { createOrder, getCurrentUser, getProducts, type Order, type OrderPayload, type Product, type User } from "./api";
 
 export type Session = { token: string; user: User } | null;
 type Cart = Record<number, number>;
@@ -22,7 +22,7 @@ type AppContextValue = {
   refreshProducts: () => Promise<void>;
   addToCart: (product: Product, quantity: number) => void;
   updateCartQuantity: (product: Product, quantity: number) => void;
-  placeOrder: (shippingAddress: string) => Promise<void>;
+  placeOrder: (details: Omit<OrderPayload, "items">) => Promise<Order>;
 };
 
 const SESSION_KEY = "ngoc-cam-phuong-session";
@@ -58,9 +58,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // Backend co the san sang cham hon frontend (khoi dong sau, hoac Neon can vai giay de thuc day),
+  // nen lan tai dau tien tu thu lai thay vi bao loi ngay.
   useEffect(() => {
-    void refreshProducts();
-    void getHealth().then(setApiReady);
+    let cancelled = false;
+    let timer = 0;
+    async function load(attempt: number) {
+      try {
+        const next = await getProducts();
+        if (cancelled) return;
+        setProducts(next);
+        setProductsError("");
+        setApiReady(true);
+        setProductsLoading(false);
+      } catch (reason) {
+        if (cancelled) return;
+        if (attempt < 5) {
+          timer = window.setTimeout(() => void load(attempt + 1), 2000);
+          return;
+        }
+        setProductsError((reason as Error).message);
+        setApiReady(false);
+        setProductsLoading(false);
+      }
+    }
+    void load(0);
+    return () => { cancelled = true; window.clearTimeout(timer); };
   }, []);
 
   useEffect(() => {
@@ -115,16 +138,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     })
     .filter((line): line is CartLine => line !== null), [cart, products]);
 
-  async function placeOrder(shippingAddress: string) {
+  async function placeOrder(details: Omit<OrderPayload, "items">) {
     if (!auth || auth.user.role !== "customer") throw new Error("Vui lòng đăng nhập bằng tài khoản khách hàng");
     if (cartLines.length === 0) throw new Error("Giỏ hàng đang trống");
-    await createOrder(auth.token, {
-      shipping_address: shippingAddress,
+    const order = await createOrder(auth.token, {
+      ...details,
       items: cartLines.map(({ product, quantity }) => ({ product_id: product.id, quantity })),
     });
     setCart({});
     setCartOpen(false);
-    await refreshProducts();
+    void refreshProducts();
+    return order;
   }
 
   const value: AppContextValue = {

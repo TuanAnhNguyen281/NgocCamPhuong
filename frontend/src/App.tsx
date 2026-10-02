@@ -7,10 +7,16 @@ import { AuthPage } from "./pages/AuthPage";
 import { ContactPage } from "./pages/ContactPage";
 import { CustomerOrdersPage } from "./pages/CustomerOrdersPage";
 import { HomePage } from "./pages/HomePage";
+import { ForgotPasswordPage, ResetPasswordPage } from "./pages/PasswordResetPages";
+import { PaymentPage } from "./pages/PaymentPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { ProductsPage } from "./pages/ProductsPage";
 import { StoryPage } from "./pages/StoryPage";
+import { AdminAccountPage } from "./pages/admin/AdminAccountPage";
+import { CategoriesAdminPage } from "./pages/admin/CategoriesAdminPage";
+import { ChatsAdminPage } from "./pages/admin/ChatsAdminPage";
 import { DashboardPage } from "./pages/admin/DashboardPage";
+import { MessagesAdminPage } from "./pages/admin/MessagesAdminPage";
 import { OrdersAdminPage } from "./pages/admin/OrdersAdminPage";
 import { ProductsAdminPage } from "./pages/admin/ProductsAdminPage";
 import { UsersAdminPage } from "./pages/admin/UsersAdminPage";
@@ -27,13 +33,20 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="login" element={<AuthPage mode="login" />} />
           <Route path="register" element={<AuthPage mode="register" />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="payment/:id" element={<PaymentPage />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="orders" element={<CustomerOrdersPage />} />
         </Route>
         <Route path="dashboard" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="products" element={<ProductsAdminPage />} />
+          <Route path="categories" element={<CategoriesAdminPage />} />
           <Route path="orders" element={<OrdersAdminPage />} />
+          <Route path="chats" element={<ChatsAdminPage />} />
+          <Route path="messages" element={<MessagesAdminPage />} />
+          <Route path="account" element={<AdminAccountPage />} />
           <Route path="users" element={<UsersAdminPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

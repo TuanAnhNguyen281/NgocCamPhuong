@@ -45,20 +45,34 @@ Khach hang chi chon so luong. Tong met bang fixed_meters nhan quantity; ton kho 
 - `#/dashboard`: tong quan quan ly.
 - `#/dashboard/products`: CRUD san pham, xoa mem.
 - `#/dashboard/orders`: quan ly trang thai don hang.
+- `#/payment/{id}`: huong dan chuyen khoan (trang tam, chua noi cong thanh toan).
+- `#/forgot-password`, `#/reset-password`: quen va dat lai mat khau.
+- `#/dashboard/categories`: quan ly danh muc.
+- `#/dashboard/chats`: tro chuyen voi khach hang.
+- `#/dashboard/messages`: loi nhan khach gui tu trang lien he.
+- `#/dashboard/account`: doi mat khau cho manager/admin.
 - `#/dashboard/users`: quan ly vai tro, chi hien voi admin.
 
 Frontend dung `HashRouter`, vi vay cac route chay truc tiep tren localhost ma khong can cau hinh rewrite web server.
 
 ## Tai khoan test localhost
 
-Sau khi chay `npm run seed` trong thu muc `backend`, co the dang nhap:
+`npm run seed` trong thu muc `backend` tao bang, hai tai khoan va 5 san pham mau (anh trong `frontend/public/sample-products`, dat ten theo SKU, duoc upload len Cloudinary neu da cau hinh). Cung co the dung cac anh nay de thu chuc nang upload trong dashboard.
+
+Voi PostgreSQL tren localhost, mat khau mac dinh la:
 
 - Quan ly: `quanly@ngoccamphuong.local` / `NgocCam@123`
 - Quan tri vien: `admin@ngoccamphuong.local` / `NgocAdmin@123`
 
+Voi database tu xa (Neon), seed khong dung mat khau mac dinh: no tu sinh mat khau ngau nhien va in ra mot lan. Dat `ADMIN_PASSWORD` / `MANAGER_PASSWORD` (va tuy chon `ADMIN_EMAIL` / `MANAGER_EMAIL`) truoc khi chay de tu chon hoac dat lai mat khau.
+
 Tai khoan Google chi hoat dong sau khi tao OAuth Client ID cho localhost, sau do dien cung gia tri vao `GOOGLE_CLIENT_ID` trong `backend/.env` va `VITE_GOOGLE_CLIENT_ID` trong `frontend/.env`.
 
 Upload anh san pham dung Cloudinary qua backend. Chi manager/admin moi co quyen upload; anh JPG, PNG hoac WebP toi da 4 MB duoc luu vao folder `ngoc-cam-phuong/products` mac dinh. Khong dua `CLOUDINARY_API_SECRET` vao frontend.
+
+## Email
+
+Email xac nhan don hang va email dat lai mat khau gui qua Resend khi da dat `RESEND_API_KEY` va `MAIL_FROM` trong `backend/.env`. Chua dat thi backend chi ghi log `[mail:skipped]`. Khi chay local chua co email, lien ket dat lai mat khau duoc in ra console cua backend (`[reset-password] ...`) de thu.
 
 ## Deploy production
 

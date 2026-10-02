@@ -27,4 +27,6 @@ export const config = {
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
   cloudinaryFolder: process.env.CLOUDINARY_FOLDER ?? "ngoc-cam-phuong/products",
+  resendApiKey: process.env.RESEND_API_KEY ?? "",
+  mailFrom: process.env.MAIL_FROM ?? "",
 };

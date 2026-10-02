@@ -1,0 +1,35 @@
+{
+  "name": "ngoc-cam-phuong-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "tsx src/seed.ts",
+    "db:setup": "tsx src/setup.ts"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "cloudinary": "^2.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "multer": "^2.4.0",
+    "pg": "^8.16.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^22.15.30",
+    "@types/pg": "^8.15.5",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.19.4",
+    "typescript": "^5.9.2"
+  }
+}

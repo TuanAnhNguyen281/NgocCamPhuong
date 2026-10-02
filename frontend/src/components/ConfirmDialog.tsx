@@ -1,0 +1,3 @@
+export function ConfirmDialog({ title, description, busy, onCancel, onConfirm }: { title: string; description: string; busy: boolean; onCancel: () => void; onConfirm: () => void }) {
+  return <div className="modal-layer" role="presentation"><div className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><span className="danger-kicker">XÁC NHẬN THAO TÁC</span><h2 id="confirm-title">{title}</h2><p>{description}</p><div><button className="secondary-action" type="button" onClick={onCancel}>Quay lại</button><button className="danger-action" type="button" disabled={busy} onClick={onConfirm}>{busy ? "Đang xóa..." : "Xóa sản phẩm"}</button></div></div></div>;
+}
